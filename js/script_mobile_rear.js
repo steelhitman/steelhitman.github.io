@@ -9,8 +9,8 @@ Promise.all([
 
 function startVideo(){
 	navigator.getUserMedia(
-		{video: {facingMode:"user"}},
-		//{video: {facingMode:{exact:"enviroment"}}},
+		{//video: {facingMode:"user"}},
+		{video: {facingMode:{exact:"enviroment"}}},
 		stream => video.srcObject=stream,
 		err=> console.error(err)
 	)
