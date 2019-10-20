@@ -7,7 +7,7 @@
 */
 
 'use strict';
-
+const video=document.getElementById("video")
 const videoElement = document.querySelector('video');
 const audioInputSelect = document.querySelector('select#audioSource');
 const audioOutputSelect = document.querySelector('select#audioOutput');
@@ -115,12 +115,12 @@ Promise.all([
 ]).then(start)
 
 video.addEventListener('play',()=>{
-	const canvas=faceapi.createCanvasFromMedia(videoElement)
+	const canvas=faceapi.createCanvasFromMedia(video)
 	document.body.append(canvas)
-	const displaySize={width:videoElement.width,height:videoElement.height}
+	const displaySize={width:video.width,height:video.height}
 	faceapi.matchDimensions(canvas,displaySize)
 	setInterval(async()=>{
-		const detections= await faceapi.detectAllFaces(videoElement,new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions()
+		const detections= await faceapi.detectAllFaces(video,new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions()
 		const resizedDetections=faceapi.resizeResults(detections,displaySize)
 		canvas.getContext('2d').clearRect(0,0,canvas.width,canvas.height)
 		faceapi.draw.drawDetections(canvas,resizedDetections)
