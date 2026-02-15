@@ -420,55 +420,11 @@
       btnNo.classList.add('hidden');
     }
 
-    // Romantic, cute background music on success – soft music box, loops
-    function playSuccessMusic() {
-      try {
-        const ctx = new (window.AudioContext || window.webkitAudioContext)();
-        const gainNode = ctx.createGain();
-        gainNode.gain.value = 0.22;
-        gainNode.connect(ctx.destination);
-        // Soft harmony layer
-        const harmGain = ctx.createGain();
-        harmGain.gain.value = 0.12;
-        harmGain.connect(ctx.destination);
-        // Slow, sweet melody (gentle rise and fall) – C major, romantic contour
-        const melody = [
-          { f: 329.63, d: 0.85 }, { f: 392, d: 0.85 }, { f: 440, d: 1.1 }, { f: 392, d: 0.85 }, { f: 329.63, d: 1.1 },
-          { f: 261.63, d: 0.85 }, { f: 329.63, d: 0.85 }, { f: 392, d: 1.4 },
-          { f: 392, d: 0.85 }, { f: 440, d: 0.85 }, { f: 493.88, d: 0.85 }, { f: 523.25, d: 1.1 }, { f: 440, d: 0.85 }, { f: 392, d: 1.1 },
-          { f: 329.63, d: 0.85 }, { f: 392, d: 0.85 }, { f: 329.63, d: 1.5 }
-        ];
-        // Harmony: soft major third below for a warm, romantic blend
-        function playMelody() {
-          let t = ctx.currentTime + 0.25;
-          melody.forEach((n) => {
-            const osc = ctx.createOscillator();
-            osc.type = 'sine';
-            osc.frequency.value = n.f;
-            osc.connect(gainNode);
-            osc.start(t);
-            osc.stop(t + n.d * 0.9);
-            const hOsc = ctx.createOscillator();
-            hOsc.type = 'sine';
-            hOsc.frequency.value = n.f * 0.794; // major third below
-            hOsc.connect(harmGain);
-            hOsc.start(t);
-            hOsc.stop(t + n.d * 0.9);
-            t += n.d;
-          });
-          return (t - ctx.currentTime - 0.25) * 1000;
-        }
-        const durationMs = playMelody();
-        setInterval(playMelody, durationMs);
-      } catch (e) {}
-    }
-
     // Yes button: show success
     btnYes.addEventListener('click', () => {
       proposal.style.display = 'none';
       success.classList.add('show');
       spawnConfettiHearts();
-      playSuccessMusic();
     });
 
     function spawnConfettiHearts() {
